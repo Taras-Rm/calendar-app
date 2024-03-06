@@ -27,12 +27,12 @@ export const useCalendar = () => {
 
   // next month
   const nextMonth = () => {
-    setMonth(calendar.nextMonthNumber(month));
+    setMonth(calendar.nextMonthData(month));
   };
 
-  // previious month
+  // previous month
   const prevMonth = () => {
-    setMonth(calendar.prevMonthNumber(month));
+    setMonth(calendar.prevMonthData(month));
   };
 
   return { today, monthData, nextMonth, prevMonth };

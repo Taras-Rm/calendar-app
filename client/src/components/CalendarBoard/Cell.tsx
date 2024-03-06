@@ -7,12 +7,15 @@ interface CellProps {
 }
 
 function Cell({ date, today, activeMonth }: CellProps) {
+  const isToday =
+    date.year === today.year &&
+    date.month === today.month &&
+    date.date === today.date;
+    
   return (
     <div
       className={`h-full ${
-        date.year === today.year &&
-        date.month === today.month &&
-        date.date === today.date
+        isToday
           ? "bg-darkGray"
           : activeMonth.month !== date.month
           ? "bg-lightGray"
