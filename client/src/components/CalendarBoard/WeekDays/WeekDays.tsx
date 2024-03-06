@@ -1,4 +1,4 @@
-import { weekDays } from "../../helpers/constants";
+import { weekDays } from "../../../helpers/constants";
 
 function WeekDays() {
   return (

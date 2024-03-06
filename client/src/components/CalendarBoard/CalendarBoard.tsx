@@ -1,5 +1,5 @@
-import Cell from "./Cell";
-import WeekDays from "./WeekDays";
+import Cell from "./Cell/Cell";
+import WeekDays from "./WeekDays/WeekDays";
 import { useCalendar } from "../../hooks/useCalendar";
 import { getMonthByKey } from "../../helpers/constants";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -32,7 +32,7 @@ function CalendarBoard() {
         </div>
       </div>
       <WeekDays />
-      <div className="grid grid-cols-7 grid-rows-6 gap-1 h-full">
+      <div className="grid grid-cols-7 grid-rows-6 gap-0.5 h-full">
         {monthData.days.map((d) => (
           <Cell
             date={d}
