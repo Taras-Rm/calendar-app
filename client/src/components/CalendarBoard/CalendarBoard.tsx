@@ -24,7 +24,7 @@ function CalendarBoard() {
           </NavigationButton>
         </div>
         <div className="flex justify-center flex-1 text-xl font-bold">
-          <div className="mr-4">{today.year}</div>
+          <div className="mr-4">{monthData.year}</div>
           <div>{getMonthByKey(monthData.month)}</div>
         </div>
         <div className="flex justify-end flex-1">

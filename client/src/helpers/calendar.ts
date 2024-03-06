@@ -1,5 +1,10 @@
 import { Day, Month } from "./constants";
 
+export type MonthData = {
+  year: number;
+  month: Month;
+};
+
 export type CalendarDate = {
   year: number;
   month: Month;
@@ -33,16 +38,14 @@ export class Calendar {
   }
 
   // get ( previous | target | next ) month days
-  getMonthPage(year: number, month: number) {
-    const targetMonth = this.month(year, month);
+  getMonthPage(monthData: MonthData) {
+    const targetMonth = this.month(monthData.year, monthData.month);
 
-    let pMonth = this.prevMonthNumber(month);
-    let pYear = pMonth === 11 ? year - 1 : year;
-    const prevMonth = this.month(pYear, pMonth);
+    let pMonth = this.prevMonthNumber(monthData);
+    const prevMonth = this.month(pMonth.year, pMonth.month);
 
-    let nMonth = this.nextMonthNumber(month);
-    let nYear = nMonth === 0 ? year + 1 : year;
-    const nextMonth = this.month(nYear, nMonth);
+    let nMonth = this.nextMonthNumber(monthData);
+    const nextMonth = this.month(nMonth.year, nMonth.month);
 
     const mth: CalendarMonth = {
       year: targetMonth.year,
@@ -69,12 +72,24 @@ export class Calendar {
     return mth;
   }
 
-  nextMonthNumber(currentMonth: number): number {
-    return currentMonth + 1 > 11 ? 0 : currentMonth + 1;
+  nextMonthNumber(currentMonth: MonthData): MonthData {
+    const newMonth = currentMonth.month + 1 > 11 ? 0 : currentMonth.month + 1;
+    const newYear = newMonth === 0 ? currentMonth.year + 1 : currentMonth.year;
+
+    return {
+      year: newYear,
+      month: newMonth,
+    };
   }
 
-  prevMonthNumber(currentMonth: number): number {
-    return currentMonth - 1 >= 0 ? currentMonth - 1 : 11;
+  prevMonthNumber(currentMonth: MonthData): MonthData {
+    const newMonth = currentMonth.month - 1 >= 0 ? currentMonth.month - 1 : 11;
+    const newYear = newMonth === 11 ? currentMonth.year - 1 : currentMonth.year;
+
+    return {
+      year: newYear,
+      month: newMonth,
+    };
   }
 
   // get month data (title, days) by year and month number
