@@ -1,17 +1,19 @@
-import { CalendarDate, CalendarMonth } from "../../../helpers/calendar";
+import { CalendarMonth } from "../../../helpers/calendar";
+import { isSameCalendarDates } from "../../../helpers/constants";
+import { CalendarDate } from "../../../types/calendar";
+import { IHoliday } from "../../../types/holidays";
+import Holiday from "../Holiday/Holiday";
 import Task from "../Task/Task";
 
 interface CellProps {
   date: CalendarDate;
   today: CalendarDate;
   activeMonth: CalendarMonth;
+  holidays: IHoliday[];
 }
 
-function Cell({ date, today, activeMonth }: CellProps) {
-  const isToday =
-    date.year === today.year &&
-    date.month === today.month &&
-    date.date === today.date;
+function Cell({ date, today, activeMonth, holidays }: CellProps) {
+  const isToday = isSameCalendarDates(date, today);
 
   const tasks: number[] = [];
 
@@ -41,6 +43,11 @@ function Cell({ date, today, activeMonth }: CellProps) {
         {tasksCountText && (
           <div className="text-darkGray">{tasksCountText}</div>
         )}
+      </div>
+      <div>
+        {holidays.map((h) => (
+          <Holiday holiday={h} />
+        ))}
       </div>
       <div className="flex flex-col space-y-1 overflow-y-auto">
         {tasks.map((t) => (

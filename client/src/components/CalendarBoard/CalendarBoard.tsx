@@ -1,12 +1,24 @@
 import Cell from "./Cell/Cell";
 import WeekDays from "./WeekDays/WeekDays";
 import { useCalendar } from "../../hooks/useCalendar";
-import { getMonthByKey } from "../../helpers/constants";
+import {
+  convertDateToCalendarDate,
+  getMonthByKey,
+  isSameCalendarDates,
+} from "../../helpers/constants";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import NavigationButton from "../NavigationButton/NavigationButton";
+import { HolidaysService } from "../../services/HolidaysService";
+import { useQuery } from "@tanstack/react-query";
 
 function CalendarBoard() {
   const { today, monthData, nextMonth, prevMonth } = useCalendar();
+
+  const { data: { data: holidays = [] } = {} } = useQuery({
+    queryKey: ["holidays", monthData?.year],
+    queryFn: () => HolidaysService.getHolidays(monthData?.year || 0),
+    enabled: !!monthData,
+  });
 
   if (!monthData) {
     return;
@@ -27,18 +39,19 @@ function CalendarBoard() {
           <div className="mr-4">{monthData.year}</div>
           <div>{getMonthByKey(monthData.month)}</div>
         </div>
-        <div className="flex justify-end flex-1">
-          <NavigationButton>Month</NavigationButton>
-        </div>
+        <div className="flex-1"></div>
       </div>
       <WeekDays />
-      <div className="grid grid-cols-7 grid-rows-6 gap-0.5 h-full">
+      <div className="grid grid-cols-7 gap-0.5 h-full">
         {monthData.days.map((d) => (
           <Cell
             date={d}
             today={today}
             activeMonth={monthData}
             key={`${d.month} ${d.date}`}
+            holidays={holidays.filter((h) =>
+              isSameCalendarDates(d, convertDateToCalendarDate(h.date))
+            )}
           />
         ))}
       </div>

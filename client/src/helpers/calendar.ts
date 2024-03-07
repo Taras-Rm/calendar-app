@@ -1,15 +1,9 @@
+import { CalendarDate } from "../types/calendar";
 import { Day, Month } from "./constants";
 
 export type MonthData = {
   year: number;
   month: Month;
-};
-
-export type CalendarDate = {
-  year: number;
-  month: Month;
-  date: number;
-  weekDay: Day;
 };
 
 export type CalendarMonth = {

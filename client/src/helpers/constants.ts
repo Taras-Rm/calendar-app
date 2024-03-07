@@ -1,3 +1,5 @@
+import { CalendarDate } from "../types/calendar";
+
 export enum Day {
   Sunday = 0,
   Monday,
@@ -113,4 +115,28 @@ export const getMonthByKey = (month: Month) => {
   }
 
   return monthValue;
+};
+
+export const isSameCalendarDates = (
+  date1: CalendarDate,
+  date2: CalendarDate
+): boolean => {
+  return (
+    date1.year === date2.year &&
+    date1.month === date2.month &&
+    date1.date === date2.date
+  );
+};
+
+export const convertDateToCalendarDate = (date: Date): CalendarDate => {
+  const newDate = new Date(date);
+
+  const resultDate: CalendarDate = {
+    year: newDate.getFullYear(),
+    month: newDate.getMonth(),
+    date: newDate.getDate(),
+    weekDay: newDate.getDay(),
+  };
+
+  return resultDate;
 };
