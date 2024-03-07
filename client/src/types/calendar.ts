@@ -6,3 +6,14 @@ export type CalendarDate = {
   date: number;
   weekDay: Day;
 };
+
+export type MonthData = {
+  year: number;
+  month: Month;
+};
+
+export type CalendarMonth = {
+  year: number;
+  month: Month;
+  days: CalendarDate[];
+};

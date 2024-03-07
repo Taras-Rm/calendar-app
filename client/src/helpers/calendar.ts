@@ -1,16 +1,5 @@
-import { CalendarDate } from "../types/calendar";
-import { Day, Month } from "./constants";
-
-export type MonthData = {
-  year: number;
-  month: Month;
-};
-
-export type CalendarMonth = {
-  year: number;
-  month: Month;
-  days: CalendarDate[];
-};
+import { CalendarDate, CalendarMonth, MonthData } from "../types/calendar";
+import { Day } from "./constants";
 
 export class Calendar {
   private today: Date;

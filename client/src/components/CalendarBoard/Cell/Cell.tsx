@@ -1,6 +1,5 @@
-import { CalendarMonth } from "../../../helpers/calendar";
 import { isSameCalendarDates } from "../../../helpers/constants";
-import { CalendarDate } from "../../../types/calendar";
+import { CalendarDate, CalendarMonth } from "../../../types/calendar";
 import { IHoliday } from "../../../types/holidays";
 import Holiday from "../Holiday/Holiday";
 import Task from "../Task/Task";

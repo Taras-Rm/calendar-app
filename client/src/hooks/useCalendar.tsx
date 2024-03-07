@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Calendar, CalendarMonth, MonthData } from "../helpers/calendar";
+import { Calendar } from "../helpers/calendar";
+import { CalendarMonth, MonthData } from "../types/calendar";
 
 export const useCalendar = () => {
   // main calendar
