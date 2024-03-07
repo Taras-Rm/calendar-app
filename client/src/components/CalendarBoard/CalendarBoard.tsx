@@ -10,6 +10,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import NavigationButton from "../NavigationButton/NavigationButton";
 import { HolidaysService } from "../../services/HolidaysService";
 import { useQuery } from "@tanstack/react-query";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 function CalendarBoard() {
   const { today, monthData, nextMonth, prevMonth } = useCalendar();
@@ -29,10 +30,10 @@ function CalendarBoard() {
       <div className="flex justify-between mb-3">
         <div className="flex flex-1 space-x-2">
           <NavigationButton onClick={() => prevMonth()}>
-            <FaChevronLeft />
+            <LeftOutlined />
           </NavigationButton>
           <NavigationButton onClick={() => nextMonth()}>
-            <FaChevronRight />
+            <RightOutlined />
           </NavigationButton>
         </div>
         <div className="flex justify-center flex-1 text-xl font-bold">

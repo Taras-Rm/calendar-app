@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { isSameCalendarDates } from "../../../helpers/constants";
 import { CalendarDate, CalendarMonth } from "../../../types/calendar";
 import { IHoliday } from "../../../types/holidays";
 import Holiday from "../Holiday/Holiday";
 import Task from "../Task/Task";
+import CreateEditTask from "../CreateEditTask/CreateEditTask";
 
 interface CellProps {
   date: CalendarDate;
@@ -15,6 +17,8 @@ function Cell({ date, today, activeMonth, holidays }: CellProps) {
   const isToday = isSameCalendarDates(date, today);
 
   const tasks: number[] = [];
+
+  const [isCreateTask, setIsCreateTask] = useState(false);
 
   const tasksCountText =
     tasks.length > 1
@@ -32,6 +36,7 @@ function Cell({ date, today, activeMonth, holidays }: CellProps) {
           ? "bg-lightGray"
           : "bg-baseGray"
       } p-1`}
+      onClick={() => setIsCreateTask(!isCreateTask)}
     >
       <div className="flex justify-between text-sm">
         <div
@@ -49,6 +54,7 @@ function Cell({ date, today, activeMonth, holidays }: CellProps) {
         ))}
       </div>
       <div className="flex flex-col space-y-1 overflow-y-auto">
+        {isCreateTask && <CreateEditTask close={() => setIsCreateTask(false)}/>}
         {tasks.map((t) => (
           <Task key={t} />
         ))}
