@@ -5,15 +5,23 @@ import { IHoliday } from "../../../types/holidays";
 import Holiday from "../Holiday/Holiday";
 import Task from "../Task/Task";
 import CreateEditTask from "../CreateEditTask/CreateEditTask";
+import { CreateTaskRequest } from "../../../types/request/TasksRequest";
 
 interface CellProps {
   date: CalendarDate;
   today: CalendarDate;
   activeMonth: CalendarMonth;
   holidays: IHoliday[];
+  handleCreateTask: (data: CreateTaskRequest) => void;
 }
 
-function Cell({ date, today, activeMonth, holidays }: CellProps) {
+function Cell({
+  date,
+  today,
+  activeMonth,
+  holidays,
+  handleCreateTask,
+}: CellProps) {
   const isToday = isSameCalendarDates(date, today);
 
   const tasks: number[] = [];
@@ -48,13 +56,19 @@ function Cell({ date, today, activeMonth, holidays }: CellProps) {
           <div className="text-darkGray">{tasksCountText}</div>
         )}
       </div>
-      <div>
+      <div className="mb-1">
         {holidays.map((h) => (
           <Holiday holiday={h} />
         ))}
       </div>
       <div className="flex flex-col space-y-1 overflow-y-auto">
-        {isCreateTask && <CreateEditTask close={() => setIsCreateTask(false)}/>}
+        {isCreateTask && (
+          <CreateEditTask
+            close={() => setIsCreateTask(false)}
+            handleCreateTask={handleCreateTask}
+            cellDate={date}
+          />
+        )}
         {tasks.map((t) => (
           <Task key={t} />
         ))}

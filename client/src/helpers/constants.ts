@@ -140,3 +140,9 @@ export const convertDateToCalendarDate = (date: Date): CalendarDate => {
 
   return resultDate;
 };
+
+export const convertCalendarDateToString = (date: CalendarDate): string => {
+  return `${date.year}-${date.month.toString().padStart(2, "0")}-${date.date
+    .toString()
+    .padStart(2, "0")}`;
+};

@@ -5,6 +5,6 @@ export type GetTasksRequest = {
   month: number;
 };
 
-export type CreateTaskRequest = Omit<ITask, "id">;
+export type CreateTaskRequest = Omit<ITask, "id" | "order">;
 
 export type UpdateTaskRequest = ITask;

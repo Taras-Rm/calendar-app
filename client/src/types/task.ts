@@ -1,6 +1,6 @@
 export type ITask = {
   id: number;
   title: string;
-  date: Date;
+  date: string;
   order: number;
 };
