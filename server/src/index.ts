@@ -1,9 +1,18 @@
-import express, { Request, Response } from "express";
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import router from "./routes";
+
+dotenv.config();
+
+const PORT = process.env.PORT || 8080;
 
 const app = express();
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello !!!");
-});
+app.use(cors());
 
-app.listen(8080);
+app.use("/api", router);
+
+app.listen(PORT, () => {
+  console.log("Server started on port: " + PORT);
+});
