@@ -8,11 +8,13 @@ dotenv.config();
 
 const PORT = process.env.PORT || 8080;
 
-export const prisma = new PrismaClient()
+export const prisma = new PrismaClient();
 
 const app = express();
 
 app.use(cors());
+
+app.use(express.json());
 
 app.use("/api", router);
 

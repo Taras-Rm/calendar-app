@@ -17,4 +17,20 @@ export class TasksController {
       next(error);
     }
   };
+
+  static createTask = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const { title, date } = req.body;
+
+      const createdTask = await TasksService.createTask({ title, date });
+
+      res.send(createdTask);
+    } catch (error) {
+      next(error);
+    }
+  };
 }

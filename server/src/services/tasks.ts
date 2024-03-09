@@ -2,6 +2,11 @@ import { Task } from "@prisma/client";
 import { prisma } from "..";
 import { convertToDate } from "../utils/date";
 
+export type CreateTask = {
+  title: string;
+  date: string;
+};
+
 export class TasksService {
   // get tasks by month
   static getTasks = async (year?: number, month?: number): Promise<Task[]> => {
@@ -26,5 +31,19 @@ export class TasksService {
     });
 
     return tasks;
+  };
+
+  static createTask = async (task: CreateTask): Promise<Task> => {
+    const newDt = new Date(task.date);
+
+    const createdTask = await prisma.task.create({
+      data: {
+        ...task,
+        date: newDt,
+        order: 1,
+      },
+    });
+
+    return createdTask;
   };
 }

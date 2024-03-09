@@ -8,12 +8,18 @@ import {
 } from "../../helpers/constants";
 import NavigationButton from "../NavigationButton/NavigationButton";
 import { HolidaysService } from "../../services/HolidaysService";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { TasksService } from "../../services/TasksService";
 import { CreateTaskRequest } from "../../types/request/TasksRequest";
 
 function CalendarBoard() {
+  const queryClient = useQueryClient();
   const { today, monthData, nextMonth, prevMonth } = useCalendar();
 
   const { data: { data: holidays = [] } = {} } = useQuery({
@@ -32,14 +38,16 @@ function CalendarBoard() {
   const { mutate: createTaskMutation } = useMutation({
     mutationFn: TasksService.createTask,
     onSuccess: () => {
-      console.log("Task is created");
+      queryClient.invalidateQueries({
+        queryKey: ["tasks", monthData?.year, monthData?.month],
+      });
     },
     onError: (error) => {
       console.log(error.message);
     },
   });
 
-  const handleCreateTask = (data: CreateTaskRequest) => {
+  const createTask = (data: CreateTaskRequest) => {
     createTaskMutation({ title: data.title, date: data.date });
   };
 
@@ -78,7 +86,7 @@ function CalendarBoard() {
             tasks={tasks.filter((t) =>
               isSameCalendarDates(d, convertStringToCalendarDate(t.date))
             )}
-            handleCreateTask={handleCreateTask}
+            createTask={createTask}
           />
         ))}
       </div>

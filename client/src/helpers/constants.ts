@@ -142,7 +142,7 @@ export const convertStringToCalendarDate = (date: string): CalendarDate => {
 };
 
 export const convertCalendarDateToString = (date: CalendarDate): string => {
-  return `${date.year}-${date.month.toString().padStart(2, "0")}-${date.date
-    .toString()
-    .padStart(2, "0")}`;
+  return new Date(Date.UTC(date.year, date.month, date.date))
+    .toISOString()
+    .split("T")[0];
 };

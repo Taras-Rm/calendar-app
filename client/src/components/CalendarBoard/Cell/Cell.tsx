@@ -13,7 +13,7 @@ interface CellProps {
   today: CalendarDate;
   activeMonth: CalendarMonth;
   holidays: IHoliday[];
-  handleCreateTask: (data: CreateTaskRequest) => void;
+  createTask: (data: CreateTaskRequest) => void;
   tasks: ITask[];
 }
 
@@ -22,7 +22,7 @@ function Cell({
   today,
   activeMonth,
   holidays,
-  handleCreateTask,
+  createTask,
   tasks,
 }: CellProps) {
   const isToday = isSameCalendarDates(date, today);
@@ -66,7 +66,7 @@ function Cell({
         {isCreateTask && (
           <CreateEditTask
             close={() => setIsCreateTask(false)}
-            handleCreateTask={handleCreateTask}
+            createTask={createTask}
             cellDate={date}
           />
         )}

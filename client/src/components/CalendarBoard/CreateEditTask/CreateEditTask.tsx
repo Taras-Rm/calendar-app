@@ -7,16 +7,17 @@ import { convertCalendarDateToString } from "../../../helpers/constants";
 
 interface CreateEditTaskProps {
   close: () => void;
-  handleCreateTask: (data: CreateTaskRequest) => void;
+  createTask: (data: CreateTaskRequest) => void;
   cellDate: CalendarDate;
 }
 
-function CreateEditTask({
-  close,
-  handleCreateTask,
-  cellDate,
-}: CreateEditTaskProps) {
+function CreateEditTask({ close, createTask, cellDate }: CreateEditTaskProps) {
   const [form] = useForm();
+
+  const handleCreateTask = (data: CreateTaskRequest) => {
+    createTask(data);
+    close();
+  };
 
   return (
     <div
