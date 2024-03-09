@@ -34,13 +34,22 @@ export class TasksService {
   };
 
   static createTask = async (task: CreateTask): Promise<Task> => {
-    const newDt = new Date(task.date);
+    const targetDate = new Date(task.date);
+
+    const lastTask = await prisma.task.findFirst({
+      where: {
+        date: targetDate,
+      },
+      orderBy: {
+        order: "desc",
+      },
+    });
 
     const createdTask = await prisma.task.create({
       data: {
         ...task,
-        date: newDt,
-        order: 1,
+        date: targetDate,
+        order: lastTask ? lastTask.order + 1 : 0,
       },
     });
 
