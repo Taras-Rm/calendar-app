@@ -1,5 +1,5 @@
 export type IHoliday = {
-  date: Date;
+  date: string;
   localName: string;
   name: string;
   fixed: boolean;

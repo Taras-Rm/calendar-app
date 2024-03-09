@@ -3,7 +3,7 @@ import { TasksService } from "../services/tasks";
 
 export class TasksController {
   static getTasks = async (
-    req: Request<{}, {}, {}, { year: number; month: number }>,
+    req: Request<{}, {}, {}, { year?: number; month?: number }>,
     res: Response,
     next: NextFunction
   ) => {

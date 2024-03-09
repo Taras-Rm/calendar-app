@@ -128,7 +128,7 @@ export const isSameCalendarDates = (
   );
 };
 
-export const convertDateToCalendarDate = (date: Date): CalendarDate => {
+export const convertStringToCalendarDate = (date: string): CalendarDate => {
   const newDate = new Date(date);
 
   const resultDate: CalendarDate = {

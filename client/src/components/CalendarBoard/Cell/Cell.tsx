@@ -6,6 +6,7 @@ import Holiday from "../Holiday/Holiday";
 import Task from "../Task/Task";
 import CreateEditTask from "../CreateEditTask/CreateEditTask";
 import { CreateTaskRequest } from "../../../types/request/TasksRequest";
+import { ITask } from "../../../types/task";
 
 interface CellProps {
   date: CalendarDate;
@@ -13,6 +14,7 @@ interface CellProps {
   activeMonth: CalendarMonth;
   holidays: IHoliday[];
   handleCreateTask: (data: CreateTaskRequest) => void;
+  tasks: ITask[];
 }
 
 function Cell({
@@ -21,10 +23,9 @@ function Cell({
   activeMonth,
   holidays,
   handleCreateTask,
+  tasks,
 }: CellProps) {
   const isToday = isSameCalendarDates(date, today);
-
-  const tasks: number[] = [];
 
   const [isCreateTask, setIsCreateTask] = useState(false);
 
@@ -53,7 +54,7 @@ function Cell({
           {date.date}
         </div>
         {tasksCountText && (
-          <div className="text-darkGray">{tasksCountText}</div>
+          <div className="mb-1 text-gray-600">{tasksCountText}</div>
         )}
       </div>
       <div className="mb-1">
@@ -70,7 +71,7 @@ function Cell({
           />
         )}
         {tasks.map((t) => (
-          <Task key={t} />
+          <Task key={t.id} task={t} />
         ))}
       </div>
     </div>

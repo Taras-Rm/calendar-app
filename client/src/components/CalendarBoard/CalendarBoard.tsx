@@ -2,7 +2,7 @@ import Cell from "./Cell/Cell";
 import WeekDays from "./WeekDays/WeekDays";
 import { useCalendar } from "../../hooks/useCalendar";
 import {
-  convertDateToCalendarDate,
+  convertStringToCalendarDate,
   getMonthByKey,
   isSameCalendarDates,
 } from "../../helpers/constants";
@@ -19,6 +19,13 @@ function CalendarBoard() {
   const { data: { data: holidays = [] } = {} } = useQuery({
     queryKey: ["holidays", monthData?.year],
     queryFn: () => HolidaysService.getHolidays(monthData?.year || 0),
+    enabled: !!monthData,
+  });
+
+  const { data: { data: tasks = [] } = {} } = useQuery({
+    queryKey: ["tasks", monthData?.year, monthData?.month],
+    queryFn: () =>
+      TasksService.getTasks({ year: monthData?.year, month: monthData?.month }),
     enabled: !!monthData,
   });
 
@@ -66,7 +73,10 @@ function CalendarBoard() {
             activeMonth={monthData}
             key={`${d.month} ${d.date}`}
             holidays={holidays.filter((h) =>
-              isSameCalendarDates(d, convertDateToCalendarDate(h.date))
+              isSameCalendarDates(d, convertStringToCalendarDate(h.date))
+            )}
+            tasks={tasks.filter((t) =>
+              isSameCalendarDates(d, convertStringToCalendarDate(t.date))
             )}
             handleCreateTask={handleCreateTask}
           />
