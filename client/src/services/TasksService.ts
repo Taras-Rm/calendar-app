@@ -1,6 +1,7 @@
 import { AxiosResponse } from "axios";
 import { api } from "../http/api";
 import {
+  ChangeTaskPosition,
   CreateTaskRequest,
   GetTasksRequest,
   UpdateTaskRequest,
@@ -35,5 +36,13 @@ export class TasksService {
 
   static async deleteTask(id: number): Promise<void> {
     return api.delete(`tasks/${id}`);
+  }
+
+  static async changeTaskPosition(req: ChangeTaskPosition): Promise<void> {
+    const { taskId, ...body } = req;
+
+    return api.put(`tasks/${taskId}/position`, {
+      ...body,
+    });
   }
 }

@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { isSameCalendarDates } from "../../../helpers/constants";
+import {
+  convertCalendarDateToString,
+  isSameCalendarDates,
+} from "../../../helpers/constants";
 import { CalendarDate, CalendarMonth } from "../../../types/calendar";
 import { IHoliday } from "../../../types/holidays";
 import Holiday from "../Holiday/Holiday";
@@ -81,8 +84,8 @@ function Cell({
       )}
       <Droppable
         isDropDisabled={isCreateTask}
-        key={`${date.month} ${date.date}`}
-        droppableId={`${date.month} ${date.date}`}
+        key={convertCalendarDateToString(date)}
+        droppableId={convertCalendarDateToString(date)}
       >
         {(provided) => (
           <div

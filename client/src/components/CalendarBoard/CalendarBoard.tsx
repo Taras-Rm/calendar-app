@@ -12,7 +12,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { TasksService } from "../../services/TasksService";
 import { CreateTaskRequest } from "../../types/request/TasksRequest";
-import { DragDropContext } from "react-beautiful-dnd";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
 function CalendarBoard() {
   const queryClient = useQueryClient();
@@ -47,6 +47,28 @@ function CalendarBoard() {
     createTaskMutation({ title: data.title, date: data.date });
   };
 
+  const { mutate: changeTaskPositionMutation } = useMutation({
+    mutationFn: TasksService.changeTaskPosition,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["tasks", monthData?.year, monthData?.month],
+      });
+    },
+    onError: (error) => {
+      console.log(error.message);
+    },
+  });
+
+  const onDragEnd = (data: DropResult) => {
+    if (!data.destination) return;
+
+    changeTaskPositionMutation({
+      taskId: Number(data.draggableId),
+      date: data.destination.droppableId,
+      order: data.destination.index,
+    });
+  };
+
   if (!monthData) {
     return;
   }
@@ -69,7 +91,7 @@ function CalendarBoard() {
         <div className="flex-1"></div>
       </div>
       <WeekDays />
-      <DragDropContext onDragEnd={(val) => console.log(val)}>
+      <DragDropContext onDragEnd={onDragEnd}>
         <div
           className="grid grid-cols-7 gap-0.5 h-full"
           style={{ gridTemplateRows: "repeat(auto-fit, minmax(100px, 1fr))" }}

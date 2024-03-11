@@ -8,3 +8,9 @@ export type GetTasksRequest = {
 export type CreateTaskRequest = Omit<ITask, "id" | "order">;
 
 export type UpdateTaskRequest = ITask;
+
+export type ChangeTaskPosition = {
+  date: string;
+  order: number;
+  taskId: number;
+};
