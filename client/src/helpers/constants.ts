@@ -128,6 +128,13 @@ export const isSameCalendarDates = (
   );
 };
 
+export const isSameCalendarMonthes = (
+  date1: CalendarDate,
+  date2: CalendarDate
+): boolean => {
+  return date1.year === date2.year && date1.month === date2.month;
+};
+
 export const convertStringToCalendarDate = (date: string): CalendarDate => {
   const newDate = new Date(date);
 

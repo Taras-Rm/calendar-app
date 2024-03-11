@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   convertCalendarDateToString,
   isSameCalendarDates,
+  isSameCalendarMonthes,
 } from "../../../helpers/constants";
 import { CalendarDate, CalendarMonth } from "../../../types/calendar";
 import { IHoliday } from "../../../types/holidays";
@@ -12,6 +13,7 @@ import { CreateTaskRequest } from "../../../types/request/TasksRequest";
 import { ITask } from "../../../types/task";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { PlusOutlined } from "@ant-design/icons";
+import { Tooltip } from "antd";
 
 interface CellProps {
   date: CalendarDate;
@@ -31,6 +33,8 @@ function Cell({
   tasks,
 }: CellProps) {
   const isToday = isSameCalendarDates(date, today);
+  const isThisMonth = isSameCalendarMonthes(date, today);
+
   const [isHovered, setIsHovered] = useState(false);
 
   const onMouseEnter = () => {
@@ -71,8 +75,10 @@ function Cell({
         {tasksCountText && (
           <div className="mb-1 text-gray-600">{tasksCountText}</div>
         )}
-        {isHovered && !isCreateTask && (
-          <PlusOutlined onClick={() => setIsCreateTask(!isCreateTask)} />
+        {isHovered && !isCreateTask && isThisMonth && (
+          <Tooltip title="Add task">
+            <PlusOutlined onClick={() => setIsCreateTask(!isCreateTask)} />
+          </Tooltip>
         )}
       </div>
       {holidays.length > 0 && (
@@ -83,7 +89,7 @@ function Cell({
         </div>
       )}
       <Droppable
-        isDropDisabled={isCreateTask}
+        isDropDisabled={isCreateTask || !isThisMonth}
         key={convertCalendarDateToString(date)}
         droppableId={convertCalendarDateToString(date)}
       >
