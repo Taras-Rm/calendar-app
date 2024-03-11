@@ -7,6 +7,7 @@ import Task from "../Task/Task";
 import CreateEditTask from "../CreateEditTask/CreateEditTask";
 import { CreateTaskRequest } from "../../../types/request/TasksRequest";
 import { ITask } from "../../../types/task";
+import { Draggable, DroppableProvided } from "react-beautiful-dnd";
 
 interface CellProps {
   date: CalendarDate;
@@ -15,6 +16,7 @@ interface CellProps {
   holidays: IHoliday[];
   createTask: (data: CreateTaskRequest) => void;
   tasks: ITask[];
+  provided: DroppableProvided;
 }
 
 function Cell({
@@ -24,6 +26,7 @@ function Cell({
   holidays,
   createTask,
   tasks,
+  provided,
 }: CellProps) {
   const isToday = isSameCalendarDates(date, today);
 
@@ -46,6 +49,8 @@ function Cell({
           : "bg-baseGray"
       } p-1`}
       onClick={() => setIsCreateTask(!isCreateTask)}
+      {...provided.droppableProps}
+      ref={provided.innerRef}
     >
       <div className="flex justify-between text-sm">
         <div
@@ -59,7 +64,7 @@ function Cell({
       </div>
       <div className="mb-1">
         {holidays.map((h) => (
-          <Holiday holiday={h} />
+          <Holiday holiday={h} key={h.name} />
         ))}
       </div>
       <div className="flex flex-col space-y-1 overflow-y-auto">
@@ -70,8 +75,22 @@ function Cell({
             cellDate={date}
           />
         )}
-        {tasks.map((t) => (
-          <Task key={t.id} task={t} />
+        {tasks.map((t, index) => (
+          <Draggable key={t.id} draggableId={`${t.id}`} index={index}>
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.dragHandleProps}
+                {...provided.draggableProps}
+                style={{
+                  ...provided.draggableProps.style,
+                  opacity: snapshot.isDragging ? "0.5" : "1",
+                }}
+              >
+                <Task task={t} />
+              </div>
+            )}
+          </Draggable>
         ))}
       </div>
     </div>

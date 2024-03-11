@@ -8,15 +8,11 @@ import {
 } from "../../helpers/constants";
 import NavigationButton from "../NavigationButton/NavigationButton";
 import { HolidaysService } from "../../services/HolidaysService";
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { TasksService } from "../../services/TasksService";
 import { CreateTaskRequest } from "../../types/request/TasksRequest";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 function CalendarBoard() {
   const queryClient = useQueryClient();
@@ -73,23 +69,32 @@ function CalendarBoard() {
         <div className="flex-1"></div>
       </div>
       <WeekDays />
-      <div className="grid grid-cols-7 grid-rows-6 gap-0.5 h-full">
-        {monthData.days.map((d) => (
-          <Cell
-            date={d}
-            today={today}
-            activeMonth={monthData}
-            key={`${d.month} ${d.date}`}
-            holidays={holidays.filter((h) =>
-              isSameCalendarDates(d, convertStringToCalendarDate(h.date))
-            )}
-            tasks={tasks.filter((t) =>
-              isSameCalendarDates(d, convertStringToCalendarDate(t.date))
-            )}
-            createTask={createTask}
-          />
-        ))}
-      </div>
+      <DragDropContext onDragEnd={(val) => console.log(val)}>
+        <div className="grid grid-cols-7 grid-rows-6 gap-0.5 h-full">
+          {monthData.days.map((d) => (
+            <Droppable
+              key={`${d.month} ${d.date}`}
+              droppableId={`${d.month} ${d.date}`}
+            >
+              {(provided) => (
+                <Cell
+                  date={d}
+                  today={today}
+                  activeMonth={monthData}
+                  holidays={holidays.filter((h) =>
+                    isSameCalendarDates(d, convertStringToCalendarDate(h.date))
+                  )}
+                  tasks={tasks.filter((t) =>
+                    isSameCalendarDates(d, convertStringToCalendarDate(t.date))
+                  )}
+                  createTask={createTask}
+                  provided={provided}
+                />
+              )}
+            </Droppable>
+          ))}
+        </div>
+      </DragDropContext>
     </div>
   );
 }
