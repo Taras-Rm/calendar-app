@@ -28,6 +28,9 @@ export class TasksService {
           lte: endDate,
         },
       },
+      orderBy: {
+        order: "asc"
+      }
     });
 
     return tasks;
@@ -54,5 +57,63 @@ export class TasksService {
     });
 
     return createdTask;
+  };
+
+  static changePosition = async (
+    taskId: number,
+    date: string,
+    order: number
+  ): Promise<void> => {
+    await prisma.$transaction(async (tx) => {
+      const task = await tx.task.findUnique({
+        where: {
+          id: taskId,
+        },
+      });
+
+      if (!task) {
+        throw new Error("can not find task by provided id");
+      }
+
+      await tx.task.updateMany({
+        where: {
+          date: task.date,
+          order: {
+            gt: task.order,
+          },
+        },
+        data: {
+          order: {
+            decrement: 1,
+          },
+        },
+      });
+
+      const newToDate = new Date(date);
+
+      await tx.task.updateMany({
+        where: {
+          date: newToDate,
+          order: {
+            gte: order,
+          },
+        },
+        data: {
+          order: {
+            increment: 1,
+          },
+        },
+      });
+
+      await tx.task.update({
+        where: {
+          id: taskId,
+        },
+        data: {
+          date: newToDate,
+          order: order,
+        },
+      });
+    });
   };
 }

@@ -33,4 +33,25 @@ export class TasksController {
       next(error);
     }
   };
+
+  static changeTaskPosition = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const { date, order } = req.body;
+      const { id } = req.params;
+
+      const createdTask = await TasksService.changePosition(
+        Number(id),
+        date,
+        Number(order)
+      );
+
+      res.send(createdTask);
+    } catch (error) {
+      next(error);
+    }
+  };
 }

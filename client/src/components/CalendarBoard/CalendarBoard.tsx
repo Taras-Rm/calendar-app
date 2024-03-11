@@ -70,7 +70,10 @@ function CalendarBoard() {
       </div>
       <WeekDays />
       <DragDropContext onDragEnd={(val) => console.log(val)}>
-        <div className="grid grid-cols-7 grid-rows-6 gap-0.5 h-full">
+        <div
+          className="grid grid-cols-7 gap-0.5 h-full"
+          style={{ gridTemplateRows: "repeat(auto-fit, minmax(100px, 1fr))" }}
+        >
           {monthData.days.map((d) => (
             <Cell
               date={d}

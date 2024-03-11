@@ -8,6 +8,7 @@ import CreateEditTask from "../CreateEditTask/CreateEditTask";
 import { CreateTaskRequest } from "../../../types/request/TasksRequest";
 import { ITask } from "../../../types/task";
 import { Draggable, Droppable } from "react-beautiful-dnd";
+import { PlusOutlined } from "@ant-design/icons";
 
 interface CellProps {
   date: CalendarDate;
@@ -27,6 +28,15 @@ function Cell({
   tasks,
 }: CellProps) {
   const isToday = isSameCalendarDates(date, today);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const onMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const onMouseLeave = () => {
+    setIsHovered(false);
+  };
 
   const [isCreateTask, setIsCreateTask] = useState(false);
 
@@ -46,7 +56,8 @@ function Cell({
           ? "bg-lightGray"
           : "bg-baseGray"
       } p-1`}
-      onClick={() => setIsCreateTask(!isCreateTask)}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <div className="flex justify-between text-sm">
         <div
@@ -57,13 +68,19 @@ function Cell({
         {tasksCountText && (
           <div className="mb-1 text-gray-600">{tasksCountText}</div>
         )}
+        {isHovered && !isCreateTask && (
+          <PlusOutlined onClick={() => setIsCreateTask(!isCreateTask)} />
+        )}
       </div>
-      <div className="mb-1">
-        {holidays.map((h) => (
-          <Holiday holiday={h} key={h.name} />
-        ))}
-      </div>
+      {holidays.length > 0 && (
+        <div className="mb-1">
+          {holidays.map((h) => (
+            <Holiday holiday={h} key={h.name} />
+          ))}
+        </div>
+      )}
       <Droppable
+        isDropDisabled={isCreateTask}
         key={`${date.month} ${date.date}`}
         droppableId={`${date.month} ${date.date}`}
       >
@@ -81,7 +98,12 @@ function Cell({
               />
             )}
             {tasks.map((t, index) => (
-              <Draggable key={t.id} draggableId={`${t.id}`} index={index}>
+              <Draggable
+                key={t.id}
+                draggableId={`${t.id}`}
+                index={index}
+                isDragDisabled={isCreateTask}
+              >
                 {(provided, snapshot) => (
                   <div
                     ref={provided.innerRef}

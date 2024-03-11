@@ -19,6 +19,5 @@ model Task {
   date  DateTime
   order Int      @default(0)
 
-  @@unique([date, order])
   @@map("tasks")
 }
