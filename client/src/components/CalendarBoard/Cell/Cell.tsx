@@ -7,7 +7,7 @@ import Task from "../Task/Task";
 import CreateEditTask from "../CreateEditTask/CreateEditTask";
 import { CreateTaskRequest } from "../../../types/request/TasksRequest";
 import { ITask } from "../../../types/task";
-import { Draggable, DroppableProvided } from "react-beautiful-dnd";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 
 interface CellProps {
   date: CalendarDate;
@@ -16,7 +16,6 @@ interface CellProps {
   holidays: IHoliday[];
   createTask: (data: CreateTaskRequest) => void;
   tasks: ITask[];
-  provided: DroppableProvided;
 }
 
 function Cell({
@@ -26,7 +25,6 @@ function Cell({
   holidays,
   createTask,
   tasks,
-  provided,
 }: CellProps) {
   const isToday = isSameCalendarDates(date, today);
 
@@ -49,8 +47,6 @@ function Cell({
           : "bg-baseGray"
       } p-1`}
       onClick={() => setIsCreateTask(!isCreateTask)}
-      {...provided.droppableProps}
-      ref={provided.innerRef}
     >
       <div className="flex justify-between text-sm">
         <div
@@ -67,32 +63,43 @@ function Cell({
           <Holiday holiday={h} key={h.name} />
         ))}
       </div>
-      <div className="flex flex-col space-y-1 overflow-y-auto">
-        {isCreateTask && (
-          <CreateEditTask
-            close={() => setIsCreateTask(false)}
-            createTask={createTask}
-            cellDate={date}
-          />
-        )}
-        {tasks.map((t, index) => (
-          <Draggable key={t.id} draggableId={`${t.id}`} index={index}>
-            {(provided, snapshot) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.dragHandleProps}
-                {...provided.draggableProps}
-                style={{
-                  ...provided.draggableProps.style,
-                  opacity: snapshot.isDragging ? "0.5" : "1",
-                }}
-              >
-                <Task task={t} />
-              </div>
+      <Droppable
+        key={`${date.month} ${date.date}`}
+        droppableId={`${date.month} ${date.date}`}
+      >
+        {(provided) => (
+          <div
+            className="flex flex-col space-y-1 overflow-y-auto h-full"
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            {isCreateTask && (
+              <CreateEditTask
+                close={() => setIsCreateTask(false)}
+                createTask={createTask}
+                cellDate={date}
+              />
             )}
-          </Draggable>
-        ))}
-      </div>
+            {tasks.map((t, index) => (
+              <Draggable key={t.id} draggableId={`${t.id}`} index={index}>
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.dragHandleProps}
+                    {...provided.draggableProps}
+                    style={{
+                      ...provided.draggableProps.style,
+                      opacity: snapshot.isDragging ? "0.5" : "1",
+                    }}
+                  >
+                    <Task task={t} key={t.id} />
+                  </div>
+                )}
+              </Draggable>
+            ))}
+          </div>
+        )}
+      </Droppable>
     </div>
   );
 }

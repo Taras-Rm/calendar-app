@@ -12,7 +12,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { TasksService } from "../../services/TasksService";
 import { CreateTaskRequest } from "../../types/request/TasksRequest";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { DragDropContext } from "react-beautiful-dnd";
 
 function CalendarBoard() {
   const queryClient = useQueryClient();
@@ -72,26 +72,18 @@ function CalendarBoard() {
       <DragDropContext onDragEnd={(val) => console.log(val)}>
         <div className="grid grid-cols-7 grid-rows-6 gap-0.5 h-full">
           {monthData.days.map((d) => (
-            <Droppable
-              key={`${d.month} ${d.date}`}
-              droppableId={`${d.month} ${d.date}`}
-            >
-              {(provided) => (
-                <Cell
-                  date={d}
-                  today={today}
-                  activeMonth={monthData}
-                  holidays={holidays.filter((h) =>
-                    isSameCalendarDates(d, convertStringToCalendarDate(h.date))
-                  )}
-                  tasks={tasks.filter((t) =>
-                    isSameCalendarDates(d, convertStringToCalendarDate(t.date))
-                  )}
-                  createTask={createTask}
-                  provided={provided}
-                />
+            <Cell
+              date={d}
+              today={today}
+              activeMonth={monthData}
+              holidays={holidays.filter((h) =>
+                isSameCalendarDates(d, convertStringToCalendarDate(h.date))
               )}
-            </Droppable>
+              tasks={tasks.filter((t) =>
+                isSameCalendarDates(d, convertStringToCalendarDate(t.date))
+              )}
+              createTask={createTask}
+            />
           ))}
         </div>
       </DragDropContext>
