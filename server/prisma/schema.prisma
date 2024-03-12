@@ -26,7 +26,7 @@ model Task {
 
 model Label {
   id    Int    @id @default(autoincrement())
-  color String
+  color String @unique()
   text  String
 
   labels TaskLabel[]

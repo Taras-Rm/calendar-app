@@ -8,7 +8,7 @@ function Label({ label }: LabelProps) {
     <div className="flex space-x-3 items-center">
       <div
         className="rounded-full h-6 w-6"
-        style={{ backgroundColor: label.color }}
+        style={{ backgroundColor: `#${label.color}` }}
       />
       <div>{label.text}</div>
     </div>
