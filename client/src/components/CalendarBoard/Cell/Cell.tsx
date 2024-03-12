@@ -33,7 +33,7 @@ function Cell({
   tasks,
 }: CellProps) {
   const isToday = isSameCalendarDates(date, today);
-  const isThisMonth = isSameCalendarMonthes(date, today);
+  const isActiveMonthCell = isSameCalendarMonthes(date, activeMonth);
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -73,9 +73,9 @@ function Cell({
           {date.date}
         </div>
         {tasksCountText && (
-          <div className="mb-1 text-gray-600">{tasksCountText}</div>
+          <div className="mb-1 text-gray-600 text-xs">{tasksCountText}</div>
         )}
-        {isHovered && !isCreateTask && isThisMonth && (
+        {isHovered && !isCreateTask && isActiveMonthCell && (
           <Tooltip title="Add task">
             <PlusOutlined onClick={() => setIsCreateTask(!isCreateTask)} />
           </Tooltip>
@@ -89,7 +89,7 @@ function Cell({
         </div>
       )}
       <Droppable
-        isDropDisabled={isCreateTask || !isThisMonth}
+        isDropDisabled={isCreateTask || !isActiveMonthCell}
         key={convertCalendarDateToString(date)}
         droppableId={convertCalendarDateToString(date)}
       >

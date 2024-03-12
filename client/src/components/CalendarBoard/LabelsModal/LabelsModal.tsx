@@ -33,7 +33,7 @@ function LabelsModal({ isOpen, close }: LabelsModalProps) {
     <Modal open={isOpen} onCancel={close} footer={null}>
       <div className="mb-3">
         <h3 className="mb-2 text-lg">Available labels</h3>
-        <div className="space-y-1">
+        <div className="space-y-1 max-h-28 overflow-y-auto border border-gray-300 rounded-md p-2">
           {labels.map((l) => (
             <Label key={l.id} label={l} />
           ))}
@@ -54,21 +54,23 @@ function LabelsModal({ isOpen, close }: LabelsModalProps) {
             <Form.Item
               className="m-0"
               name={"color"}
-              required
+              rules={[{ required: true, message: "" }]}
             >
               <ColorPicker format="hex" />
             </Form.Item>
             <Form.Item
               className="w-full m-0"
               name={"text"}
-              rules={[{ required: true }]}
+              rules={[{ required: true, message: "" }]}
             >
               <Input placeholder="Text..." />
             </Form.Item>
           </div>
-          <Form.Item>
-            <Button htmlType="submit">Add</Button>
-          </Form.Item>
+          <div className="flex justify-end">
+            <Form.Item className="m-0">
+              <Button htmlType="submit">Add</Button>
+            </Form.Item>
+          </div>
         </Form>
       </div>
     </Modal>

@@ -1,4 +1,4 @@
-import { CalendarDate } from "../types/calendar";
+import { CalendarDate, CalendarMonth } from "../types/calendar";
 
 export enum Day {
   Sunday = 0,
@@ -129,8 +129,8 @@ export const isSameCalendarDates = (
 };
 
 export const isSameCalendarMonthes = (
-  date1: CalendarDate,
-  date2: CalendarDate
+  date1: CalendarDate | CalendarMonth,
+  date2: CalendarDate | CalendarMonth
 ): boolean => {
   return date1.year === date2.year && date1.month === date2.month;
 };

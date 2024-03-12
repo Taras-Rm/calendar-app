@@ -1,5 +1,5 @@
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import { Form, Input } from "antd";
+import { Form, Input, Tooltip } from "antd";
 import { CreateTaskRequest } from "../../../types/request/TasksRequest";
 import { useForm } from "antd/es/form/Form";
 import { CalendarDate } from "../../../types/calendar";
@@ -35,18 +35,26 @@ function CreateEditTask({ close, createTask, cellDate }: CreateEditTaskProps) {
         }
         form={form}
       >
-        <Form.Item className="m-0" name={"title"}>
+        <Form.Item
+          className="m-0"
+          name={"title"}
+          rules={[{ required: true, message: "" }]}
+        >
           <Input className="text-xs" placeholder="Title..." />
         </Form.Item>
         <div className="flex justify-evenly">
           <Form.Item className="m-0">
-            <CloseOutlined className="cursor-pointer" onClick={close} />
+            <Tooltip title={"Close"} placement="bottom">
+              <CloseOutlined className="cursor-pointer" onClick={close} />
+            </Tooltip>
           </Form.Item>
           <Form.Item className="m-0">
-            <CheckOutlined
-              className="cursor-pointer"
-              onClick={() => form.submit()}
-            />
+            <Tooltip title={"Save"} placement="bottom">
+              <CheckOutlined
+                className="cursor-pointer"
+                onClick={() => form.submit()}
+              />
+            </Tooltip>
           </Form.Item>
         </div>
       </Form>
