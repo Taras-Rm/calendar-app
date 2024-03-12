@@ -13,9 +13,14 @@ import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { TasksService } from "../../services/TasksService";
 import { CreateTaskRequest } from "../../types/request/TasksRequest";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import LabelsModal from "./LabelsModal/LabelsModal";
+import { useState } from "react";
+import { Button } from "antd";
 
 function CalendarBoard() {
   const queryClient = useQueryClient();
+  const [isLabelsModalOpen, setIsLabelsModalOpen] = useState(false);
+
   const { today, monthData, nextMonth, prevMonth } = useCalendar();
 
   const { data: { data: holidays = [] } = {} } = useQuery({
@@ -88,7 +93,9 @@ function CalendarBoard() {
           <div className="mr-4">{monthData.year}</div>
           <div>{getMonthByKey(monthData.month)}</div>
         </div>
-        <div className="flex-1"></div>
+        <div className="flex-1 flex justify-end">
+          <Button onClick={() => setIsLabelsModalOpen(true)}>Labels</Button>
+        </div>
       </div>
       <WeekDays />
       <DragDropContext onDragEnd={onDragEnd}>
@@ -112,6 +119,10 @@ function CalendarBoard() {
           ))}
         </div>
       </DragDropContext>
+      <LabelsModal
+        isOpen={isLabelsModalOpen}
+        close={() => setIsLabelsModalOpen(false)}
+      />
     </div>
   );
 }

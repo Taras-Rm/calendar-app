@@ -8,7 +8,7 @@ export class LabelsController {
     next: NextFunction
   ) => {
     try {
-      const labels = LabelsService.getLabels();
+      const labels = await LabelsService.getLabels();
 
       res.send(labels);
     } catch (error) {
