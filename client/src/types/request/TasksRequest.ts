@@ -5,7 +5,7 @@ export type GetTasksRequest = {
   month?: number;
 };
 
-export type CreateTaskRequest = Omit<ITask, "id" | "order">;
+export type CreateTaskRequest = Omit<ITask, "id" | "order" | "labels">;
 
 export type UpdateTaskRequest = ITask;
 

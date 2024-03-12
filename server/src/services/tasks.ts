@@ -33,7 +33,7 @@ export class TasksService {
       },
       include: {
         labels: {
-          include: {
+          select: {
             label: true,
           },
         },
