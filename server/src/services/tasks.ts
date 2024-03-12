@@ -29,8 +29,15 @@ export class TasksService {
         },
       },
       orderBy: {
-        order: "asc"
-      }
+        order: "asc",
+      },
+      include: {
+        labels: {
+          include: {
+            label: true,
+          },
+        },
+      },
     });
 
     return tasks;

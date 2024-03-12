@@ -19,5 +19,28 @@ model Task {
   date  DateTime
   order Int      @default(0)
 
+  labels TaskLabel[]
+
   @@map("tasks")
+}
+
+model Label {
+  id    Int    @id @default(autoincrement())
+  color String
+  text  String
+
+  labels TaskLabel[]
+
+  @@map("labels")
+}
+
+model TaskLabel {
+  taskId  Int @map("task_id")
+  labelId Int @map("label_id")
+
+  task  Task  @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  label Label @relation(fields: [labelId], references: [id], onDelete: Cascade)
+
+  @@unique([taskId, labelId])
+  @@map("tasks_labels")
 }
