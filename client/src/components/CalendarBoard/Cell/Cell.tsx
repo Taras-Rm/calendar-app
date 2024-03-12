@@ -95,7 +95,7 @@ function Cell({
       >
         {(provided) => (
           <div
-            className="flex flex-col space-y-1 overflow-y-auto h-full"
+            className="flex flex-col overflow-y-auto h-full"
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
@@ -122,6 +122,7 @@ function Cell({
                       ...provided.draggableProps.style,
                       opacity: snapshot.isDragging ? "0.5" : "1",
                     }}
+                    className="mb-1"
                   >
                     <Task task={t} key={t.id} />
                   </div>
